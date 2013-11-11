@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
-require "prct09/version"
-require "prct09/fraccion"
-require "prct09/matriz"
-require "prct09/matriz_densa"
-require "prct09/matriz_dispersa"
+require "Practica9/version"
+require "Practica9/fraccion"
+require "Practica9/matriz"
+require "Practica9/matriz_densa"
+require "Practica9/matriz_dispersa"
 
 module Practica9
   # Your code goes here...
