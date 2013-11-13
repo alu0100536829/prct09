@@ -19,8 +19,12 @@
 ********************************************************************************************
 =end
 #Clase Matriz
+
+require "./fraccion.rb"
+
 class Matriz
-	attr_reader :matriz, :filas, :columnas #crea los getters para los atributos
+	attr_reader :filas, :columnas #crea los getters para los atributos
+	attr_accessor :matriz	#matriz accesible para poder meterle valores fuera del initialize
 	
 	#Método para crear matriz con valores introducidos por teclado
 	def initialize
@@ -74,6 +78,34 @@ class Matriz
 		
 	end
 	
+	#Método para crear matriz con valores predefinidos
+	def initialize(fil, col, a, b)
+
+		#comprobamos que los datos de entradas sean numericos
+		raise unless fil.is_a?(Numeric)
+		raise unless col.is_a?(Numeric)
+		
+		#inicializamos las variables
+		@filas, @columnas = fil, col
+		@matriz = []
+		
+		#inicializamos valores fijos de matriz
+		
+		for i in (0..fil-1)
+				@matriz[i] = []
+				for j in (0..col-1)
+						@matriz[i][j] = Fraccion.new(a,b)
+						a += 1
+						b += 1
+				end
+		end
+		
+		#puts "Elementos de la matriz: "
+		#mostrar(@matriz)
+		
+	end
+	
+	
 # Método para introducir los valores de la matriz por teclado
 	def asignar_matriz_teclado(a,filas)
 		i = 0
@@ -92,12 +124,12 @@ class Matriz
 
 
 # Método que muestra la matriz
-	def to_s(a)
+	def mostrar
 		i = 0
-		while (i < a.length)
+		while (i < @filas)
 			j = 0
-			while (j < a.length)
-				print " ", a[i][j], " "
+			while (j < @columnas)
+				print " ", @matriz[i][j], " "
 				j += 1
 			end
 			print "\n"
@@ -107,21 +139,19 @@ class Matriz
 	
 # Producto de matrices
 	def * (other)
-		c = []
+		c = Matriz.new(@filas,@filas,1,1)
 		i = 0
 		while( i < @filas )
 			j = 0
-			fila = []
 			while( j < @columnas )
 				k = 0
-				fila[j] = 0
+				c.matriz[i][j] = Fraccion.new(0,1)
 				while( k < @filas)
-					fila[j] += (@matriz[i][k] * other.matriz[k][j] )
+					c.matriz[i][j] += (@matriz[i][k] * other.matriz[k][j] )
 					k += 1
 				end
 				j += 1
 			end
-			c << fila
 			i += 1
 		end
 		#mostrar(c)
@@ -130,35 +160,31 @@ class Matriz
 	
 # Suma de matrices
 	def + (other)
-	c = []
-		i = 0
-		while(i < @filas)
-			j = 0
-			fila = []
-			while(j < @columnas)
-				fila[j] = @matriz[i][j] + other.matriz[i][j]				
-				j += 1
-			end
-		c << fila
-		i += 1	
-		end
-		#mostrar(c)
-		return c
+	    c = Matriz.new(@filas,@columnas,1,1)
+	    i = 0
+	    while(i < @filas)
+		    j = 0
+		    while(j < @columnas)
+			    c.matriz[i][j] = @matriz[i][j] + other.matriz[i][j]				
+			    j += 1
+		    end
+	    i += 1	
+	    end
+	    #mostrar(c)
+	    return c
 
 	end
 	
 # Resta de matrices
 	def - (other)
-	c = []
+	    c = Matriz.new(@filas,@columnas,1,1)
 		i = 0
 		while(i < @filas)
 			j = 0
-			fila = []
 			while(j < @columnas)
-				fila[j] = @matriz[i][j] - other.matriz[i][j]				
+				c.matriz[i][j] = @matriz[i][j] - other.matriz[i][j]				
 				j += 1
 			end
-		c << fila
 		i += 1	
 		end
 		#mostrar(c)
@@ -170,18 +196,20 @@ class Matriz
 end
 
 
-m1 = Matriz.new(3,3)
-m2 = Matriz.new(3,3)
+m1 = Matriz.new(3,3,1,1)
+m2 = Matriz.new(3,3,1,1)
 
 print "\n"
-puts "Suma de matrices:"
-puts (m1 + m2).to_s
+m1.mostrar
+print "\n"
+m2.mostrar
 
 print "\n"
-puts "Resta de matrices:"
-puts (m1 - m2).to_s
 
+(m1 + m2).mostrar
 print "\n"
-puts "Producto de matrices:"
-puts (m1 * m2).to_s
 
+(m1 - m2).mostrar
+print "\n"
+(m1 * m2).mostrar
+print "\n"

@@ -16,7 +16,7 @@
 ***********************************************************
 =end
 
-require "./lib/gcd.rb"
+require "./gcd.rb"
 
 class Fraccion
 	include Comparable
